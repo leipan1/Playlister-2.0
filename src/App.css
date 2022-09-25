@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Tangerine');
+
 :root {
   /* 
         FIRST WE'LL DEFINE OUR SWATCHES, i.e. THE COMPLEMENTARY
@@ -19,7 +21,7 @@ body {
 
 #root {
   background-color: var(--swatch-primary);
-  font-family: serif;
+  font-family: 'Tangerine', serif;
   position: absolute;
   width: 80%;
   left: 10%;
@@ -135,6 +137,11 @@ body {
   font-size:18pt;
 }
 
+.song-card-button{
+  float:right;
+  font-size: 18pt;
+}
+
 .playlister-button, .playlister-button-disabled {
   font-size:36pt;
   border-width: 0px;
@@ -154,10 +161,19 @@ body {
 }
 
 .playlister-song, .playlister-song-dragged-to { 
-  display:flex;
+  background-color: var(--swatch-complement);
+  /* display:flex; */
   align-items: center;
-  font-size: 24pt;
-  height:20%;
+  font-size: 18pt;
+  /* height:20%; */
+  border-radius: 25px;
+  margin: 10px;
+  padding: 20px;
+}
+
+.playlister-song:hover, .playlister-song-dragged-to:hover {
+  background-color: var(--swatch-contrast);
+  color:white;
 }
 
 input {
@@ -191,7 +207,7 @@ input {
 
 .modal-root {
   position: relative;
-  max-width: 1200vw;
+  max-width: 70%;
   max-height: 600vh;
   overflow: visible;
   display: flex;
