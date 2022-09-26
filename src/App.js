@@ -10,6 +10,7 @@ import MoveSong_Transaction from './transactions/MoveSong_Transaction.js';
 
 // THESE REACT COMPONENTS ARE MODALS
 import DeleteListModal from './components/DeleteListModal.js';
+import EditSongModal from './components/EditSongModal.js'
 
 // THESE REACT COMPONENTS ARE IN OUR UI
 import Banner from './components/Banner.js';
@@ -18,6 +19,7 @@ import PlaylistCards from './components/PlaylistCards.js';
 import SidebarHeading from './components/SidebarHeading.js';
 import SidebarList from './components/SidebarList.js';
 import Statusbar from './components/Statusbar.js';
+
 
 class App extends React.Component {
     constructor(props) {
@@ -36,7 +38,8 @@ class App extends React.Component {
         this.state = {
             listKeyPairMarkedForDeletion : null,
             currentList : null,
-            sessionData : loadedSessionData
+            sessionData : loadedSessionData,
+            currentSongIndex: null,
         }
     }
     sortKeyNamePairsByName = (keyNamePairs) => {
@@ -263,6 +266,40 @@ class App extends React.Component {
             this.showDeleteListModal();
         });
     }
+
+    markEditSong= (index) =>{
+        this.setState(prevState => ({
+            currentList: prevState.currentList,
+            listKeyPairMarkedForDeletion : prevState.listKeyPairMarkedForDeletion,
+            sessionData: prevState.sessionData,
+            currentSongIndex: index,
+        }), () => {
+            // PROMPT THE USER
+            document.getElementById("newTitle").value=this.state.currentList.songs[index-1].title
+            document.getElementById("newArtist").value=this.state.currentList.songs[index-1].artist
+            document.getElementById("newYTID").value=this.state.currentList.songs[index-1].youTubeId
+            
+            let modal=document.getElementById("edit-song-modal");
+            modal.classList.add("is-visible")
+        });
+    }
+
+    confirmEdit= (newTitle, newArtist, newYTID) =>{
+        let song=this.state.currentList.songs;
+        let index=this.state.currentSongIndex;
+        song[index-1].title=newTitle;
+        song[index-1].artist=newArtist;
+        song[index-1].youTubeId=newYTID;
+        let modal=document.getElementById("edit-song-modal");
+        modal.classList.remove("is-visible")
+        this.setStateWithUpdatedList(this.state.currentList)
+    }
+
+    hideEditSongModal(){
+        let modal=document.getElementById("edit-song-modal");
+        modal.classList.remove("is-visible")
+    }
+
     // THIS FUNCTION SHOWS THE MODAL FOR PROMPTING THE USER
     // TO SEE IF THEY REALLY WANT TO DELETE THE LIST
     showDeleteListModal() {
@@ -303,13 +340,19 @@ class App extends React.Component {
                 />
                 <PlaylistCards
                     currentList={this.state.currentList}
-                    moveSongCallback={this.addMoveSongTransaction} />
+                    moveSongCallback={this.addMoveSongTransaction} 
+                    editSongCallback={this.markEditSong}
+                    />
                 <Statusbar 
                     currentList={this.state.currentList} />
                 <DeleteListModal
                     listKeyPair={this.state.listKeyPairMarkedForDeletion}
                     hideDeleteListModalCallback={this.hideDeleteListModal}
                     deleteListCallback={this.deleteMarkedList}
+                />
+                <EditSongModal
+                    confirmEditSongCallback={this.confirmEdit}
+                    hideEditSongModalCallback={this.hideEditSongModal}
                 />
             </div>
         );
