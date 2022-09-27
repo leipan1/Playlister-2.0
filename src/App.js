@@ -7,7 +7,11 @@ import jsTPS from './common/jsTPS.js';
 
 // OUR TRANSACTIONS
 import MoveSong_Transaction from './transactions/MoveSong_Transaction.js';
-import AddSong_Transaction from './transactions/AddSong_Transaction';
+import AddSong_Transaction from './transactions/AddSong_Transaction.js';
+import EditSong_Transaction from './transactions/EditSong_Transaction.js'
+import DeleteSong_Transaction from './transactions/DeleteSong_Transaction.js'
+// import EditSong_Transaction from './transactions/EditSong_Transaction';
+// import DeleteSong_Transaction from './transactions/DeleteSong_Transaction';
 
 // THESE REACT COMPONENTS ARE MODALS
 import DeleteListModal from './components/DeleteListModal.js';
@@ -246,6 +250,17 @@ class App extends React.Component {
         this.tps.addTransaction(transaction);
     }
 
+    addDeleteSongTransaction = () =>{
+        let transcation= new DeleteSong_Transaction(this, this.state.currentSongIndex)
+        this.tps.addTransaction(transcation)
+    }
+
+    addEditSongTransaction = () =>{
+        let index=this.state.currentSongIndex
+        let transaction= new EditSong_Transaction(this,index)
+        this.tps.addTransaction(transaction);
+    }
+
     // THIS FUNCTION BEGINS THE PROCESS OF PERFORMING AN UNDO
     undo = () => {
         if (this.tps.hasTransactionToUndo()) {
@@ -292,9 +307,9 @@ class App extends React.Component {
         });
     }
 
-    confirmEdit= (newTitle, newArtist, newYTID) =>{
+    confirmEdit= (newTitle, newArtist, newYTID,index) =>{
         let song=this.state.currentList.songs;
-        let index=this.state.currentSongIndex;
+        //let index=this.state.currentSongIndex;
         song[index-1].title=newTitle;
         song[index-1].artist=newArtist;
         song[index-1].youTubeId=newYTID;
@@ -337,7 +352,6 @@ class App extends React.Component {
             sessionData: prevState.sessionData,
             currentSongIndex: index,
         }), () =>{
-            console.log("index of song to be deleted:"+index)
             let modal = document.getElementById("delete-song-modal");
             let titleName= this.state.currentList.songs[index-1].title;
             let deleteTitleName=document.getElementById("deleteSongTitle")
@@ -349,9 +363,9 @@ class App extends React.Component {
 
     
 
-    confirmDelete = () =>{
+    confirmDelete = (index) =>{
             let songList=this.state.currentList.songs
-            songList.splice(this.state.currentSongIndex-1,1)
+            songList.splice(index,1)
             this.setStateWithUpdatedList(this.state.currentList)
             let modal = document.getElementById("delete-song-modal");
             modal.classList.remove("is-visible"); 
@@ -404,13 +418,13 @@ class App extends React.Component {
                     deleteListCallback={this.deleteMarkedList}
                 />
                 <EditSongModal
-                    confirmEditSongCallback={this.confirmEdit}
+                    confirmEditSongCallback={this.addEditSongTransaction}
                     hideEditSongModalCallback={this.hideEditSongModal}
                 />
                 <DeleteSongModal
                     // currentList={this.state.currentList}
                     // index={this.state.currentSongIndex}
-                    confirmDeleteSongCallback={this.confirmDelete}
+                    confirmDeleteSongCallback={this.addDeleteSongTransaction}
                     hideDeleteSongModalCallback={this.hideDeleteSongModal}
                 />
             </div>
