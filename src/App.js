@@ -7,6 +7,7 @@ import jsTPS from './common/jsTPS.js';
 
 // OUR TRANSACTIONS
 import MoveSong_Transaction from './transactions/MoveSong_Transaction.js';
+import AddSong_Transaction from './transactions/AddSong_Transaction';
 
 // THESE REACT COMPONENTS ARE MODALS
 import DeleteListModal from './components/DeleteListModal.js';
@@ -239,6 +240,12 @@ class App extends React.Component {
         let transaction = new MoveSong_Transaction(this, start, end);
         this.tps.addTransaction(transaction);
     }
+
+    addAddSongTransaction = () =>{
+        let transaction= new AddSong_Transaction(this)
+        this.tps.addTransaction(transaction);
+    }
+
     // THIS FUNCTION BEGINS THE PROCESS OF PERFORMING AN UNDO
     undo = () => {
         if (this.tps.hasTransactionToUndo()) {
@@ -330,6 +337,7 @@ class App extends React.Component {
             sessionData: prevState.sessionData,
             currentSongIndex: index,
         }), () =>{
+            console.log("index of song to be deleted:"+index)
             let modal = document.getElementById("delete-song-modal");
             let titleName= this.state.currentList.songs[index-1].title;
             let deleteTitleName=document.getElementById("deleteSongTitle")
@@ -380,7 +388,7 @@ class App extends React.Component {
                     undoCallback={this.undo}
                     redoCallback={this.redo}
                     closeCallback={this.closeCurrentList}
-                    addSongCallback={this.addSong}
+                    addSongCallback={this.addAddSongTransaction}
                 />
                 <PlaylistCards
                     currentList={this.state.currentList}
