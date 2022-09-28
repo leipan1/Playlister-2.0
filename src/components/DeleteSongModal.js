@@ -3,15 +3,6 @@ import React, { Component } from 'react';
 export default class DeleteSongModal extends Component {
     render() {
         const {confirmDeleteSongCallback, hideDeleteSongModalCallback } = this.props;
-        // let thistitle = "";
-        // console.log("currentlist::")
-        // console.log(currentList)
-        // console.log("index:: "+index)
-        // if (currentList && index) {
-            
-        //     thistitle = currentList.songs[index-1].title;
-        //     console.log("this title::"+thistitle)
-        // }
         return (
             <div 
                 class="modal" 

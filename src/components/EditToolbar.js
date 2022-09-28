@@ -15,9 +15,11 @@ export default class EditToolbar extends React.Component {
         
         }
         if (!canUndo){
+            console.log("can't undo")
             undoClass += "-disabled";
         }
         if (!canRedo){ 
+            console.log("can't redo")
             redoClass += "-disabled";
         }
         if (!canClose){ 

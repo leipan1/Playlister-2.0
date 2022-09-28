@@ -177,6 +177,7 @@ class App extends React.Component {
     // THIS FUNCTION BEGINS THE PROCESS OF LOADING A LIST FOR EDITING
     loadList = (key) => {
         let newCurrentList = this.db.queryGetList(key);
+        this.tps.clearAllTransactions();
         this.setState(prevState => ({
             listKeyPairMarkedForDeletion : prevState.listKeyPairMarkedForDeletion,
             currentList: newCurrentList,
@@ -184,11 +185,13 @@ class App extends React.Component {
         }), () => {
             // AN AFTER EFFECT IS THAT WE NEED TO MAKE SURE
             // THE TRANSACTION STACK IS CLEARED
-            this.tps.clearAllTransactions();
+            console.log("CLEAR ALL TRANSACTION")
+            // this.tps.clearAllTransactions();
         });
     }
     // THIS FUNCTION BEGINS THE PROCESS OF CLOSING THE CURRENT LIST
     closeCurrentList = () => {
+        this.tps.clearAllTransactions();
         this.setState(prevState => ({
             listKeyPairMarkedForDeletion : prevState.listKeyPairMarkedForDeletion,
             currentList: null,
@@ -196,7 +199,7 @@ class App extends React.Component {
         }), () => {
             // AN AFTER EFFECT IS THAT WE NEED TO MAKE SURE
             // THE TRANSACTION STACK IS CLEARED
-            this.tps.clearAllTransactions();
+            // this.tps.clearAllTransactions();
         });
     }
     setStateWithUpdatedList(list) {
@@ -262,10 +265,12 @@ class App extends React.Component {
     // THIS FUNCTION BEGINS THE PROCESS OF PERFORMING AN UNDO
     undo = () => {
         if (this.tps.hasTransactionToUndo()) {
+            console.log("called undo!")
             this.tps.undoTransaction();
 
             // MAKE SURE THE LIST GETS PERMANENTLY UPDATED
             this.db.mutationUpdateList(this.state.currentList);
+
         }
     }
     // THIS FUNCTION BEGINS THE PROCESS OF PERFORMING A REDO
@@ -396,9 +401,11 @@ class App extends React.Component {
 
 
     render() {
+        console.log("TO STRING")
+        console.log(this.tps.toString())
         let canAddSong = this.state.currentList !== null;
-        let canUndo = this.tps.hasTransactionToUndo() && canAddSong;
-        let canRedo = this.tps.hasTransactionToRedo() && canAddSong;
+        let canUndo = (this.tps.hasTransactionToUndo());
+        let canRedo = (this.tps.hasTransactionToRedo());
         let canClose = this.state.currentList !== null;
         let canAddList= this.state.currentList === null
         return (

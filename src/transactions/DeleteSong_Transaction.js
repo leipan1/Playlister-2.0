@@ -22,7 +22,6 @@ export default class DeleteSong_Transaction extends jsTPS_Transaction {
     undoTransaction() {
         this.app.addSong();
         let length=this.app.getPlaylistSize();
-        console.log("lenght:::"+length)
         this.app.moveSong(length,this.index);
         this.app.confirmEdit(this.oldTitle,this.oldArtist,this.oldYTID,this.index)
     }
