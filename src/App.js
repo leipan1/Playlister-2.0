@@ -376,6 +376,25 @@ class App extends React.Component {
         modal.classList.remove("is-visible");
     }
 
+    keydownHandler=(e)=>{
+        if(e.keyCode===90 && e.ctrlKey){
+            if (this.tps.hasTransactionToUndo()){
+                this.undo()
+            }
+            
+        }
+        if(e.keyCode===89 && e.ctrlKey){
+            if(this.tps.hasTransactionToRedo())
+                this.redo()
+        }
+    }
+    componentDidMount(){
+        document.addEventListener('keydown',this.keydownHandler);
+    }
+    componentWillUnmount(){
+        document.removeEventListener('keydown',this.keydownHandler);
+    }
+
     render() {
         let canAddSong = this.state.currentList !== null;
         let canUndo = this.tps.hasTransactionToUndo();
