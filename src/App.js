@@ -112,6 +112,7 @@ class App extends React.Component {
         let newKeyNamePairs = [...this.state.sessionData.keyNamePairs];
         if (keyIndex >= 0)
             newKeyNamePairs.splice(keyIndex, 1);
+        this.tps.clearAllTransactions();
 
         // AND FROM OUR APP STATE
         this.setState(prevState => ({
