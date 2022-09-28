@@ -8,10 +8,8 @@ import jsTPS from './common/jsTPS.js';
 // OUR TRANSACTIONS
 import MoveSong_Transaction from './transactions/MoveSong_Transaction.js';
 import AddSong_Transaction from './transactions/AddSong_Transaction.js';
-import EditSong_Transaction from './transactions/EditSong_Transaction.js'
-import DeleteSong_Transaction from './transactions/DeleteSong_Transaction.js'
-// import EditSong_Transaction from './transactions/EditSong_Transaction';
-// import DeleteSong_Transaction from './transactions/DeleteSong_Transaction';
+import EditSong_Transaction from './transactions/EditSong_Transaction.js';
+import DeleteSong_Transaction from './transactions/DeleteSong_Transaction.js';
 
 // THESE REACT COMPONENTS ARE MODALS
 import DeleteListModal from './components/DeleteListModal.js';
@@ -395,16 +393,20 @@ class App extends React.Component {
         document.removeEventListener('keydown',this.keydownHandler);
     }
 
+
+
     render() {
         let canAddSong = this.state.currentList !== null;
-        let canUndo = this.tps.hasTransactionToUndo();
-        let canRedo = this.tps.hasTransactionToRedo();
+        let canUndo = this.tps.hasTransactionToUndo() && canAddSong;
+        let canRedo = this.tps.hasTransactionToRedo() && canAddSong;
         let canClose = this.state.currentList !== null;
+        let canAddList= this.state.currentList === null
         return (
             <div id="root">
                 <Banner />
                 <SidebarHeading
                     createNewListCallback={this.createNewList}
+                    canAddList={canAddList}
                 />
                 <SidebarList
                     currentList={this.state.currentList}

@@ -1,7 +1,6 @@
 import React from "react";
 
 export default class EditToolbar extends React.Component {
- 
 
     render() {
         const { canAddSong, canUndo, canRedo, canClose, 
@@ -11,17 +10,18 @@ export default class EditToolbar extends React.Component {
         let redoClass = "toolbar-button";
         let closeClass = "toolbar-button";
 
-        if (canAddSong){
-            addSongClass += " disabled";
+        if (!canAddSong){
+            addSongClass += "-disabled";
+        
         }
-        if (canUndo){
-            undoClass += " disabled";
+        if (!canUndo){
+            undoClass += "-disabled";
         }
-        if (canRedo){ 
-            redoClass += " disabled";
+        if (!canRedo){ 
+            redoClass += "-disabled";
         }
-        if (canClose){ 
-            closeClass += " disabled";
+        if (!canClose){ 
+            closeClass += "-disabled";
         }
 
         return (
@@ -33,6 +33,8 @@ export default class EditToolbar extends React.Component {
                 value="+" 
                 className={addSongClass}
                 onClick={addSongCallback}
+                disabled={canAddSong ? false : true}
+                
             />
 
             <input 
@@ -41,6 +43,7 @@ export default class EditToolbar extends React.Component {
                 value="⟲" 
                 className={undoClass} 
                 onClick={undoCallback}
+                disabled={canUndo ? false: true}
             />
             <input 
                 type="button" 
@@ -48,6 +51,7 @@ export default class EditToolbar extends React.Component {
                 value="⟳" 
                 className={redoClass} 
                 onClick={redoCallback}
+                disabled={canRedo? false: true}
             />
             <input 
                 type="button" 
@@ -55,6 +59,7 @@ export default class EditToolbar extends React.Component {
                 value="&#x2715;" 
                 className={closeClass} 
                 onClick={closeCallback}
+                disabled={canClose? false:true}
             />
         </div>
         )
