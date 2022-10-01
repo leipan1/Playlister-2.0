@@ -2,7 +2,15 @@ import React, { Component } from 'react';
 
 export default class DeleteSongModal extends Component {
     render() {
-        const {confirmDeleteSongCallback, hideDeleteSongModalCallback } = this.props;
+        const {confirmDeleteSongCallback, hideDeleteSongModalCallback} = this.props;
+
+        // let addSongButton=document.getElementById("add-song-button")
+        // if(addSongButton!=null){
+        //     console.log("wefhiwuefhiw")
+        //     addSongButton.className="toolbar-button-disabled"
+        //     console.log(addSongButton)
+        // }
+
         return (
             <div 
                 class="modal" 

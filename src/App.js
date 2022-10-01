@@ -319,12 +319,14 @@ class App extends React.Component {
         song[index-1].youTubeId=newYTID;
         let modal=document.getElementById("edit-song-modal");
         modal.classList.remove("is-visible")
+        this.enableButtons()
         this.setStateWithUpdatedList(this.state.currentList)
     }
 
     hideEditSongModal=()=>{
         let modal=document.getElementById("edit-song-modal");
         modal.classList.remove("is-visible")
+        this.enableButtons()
     }
 
     // THIS FUNCTION SHOWS THE MODAL FOR PROMPTING THE USER
@@ -337,6 +339,8 @@ class App extends React.Component {
     hideDeleteListModal = () => {
         let modal = document.getElementById("delete-list-modal");
         modal.classList.remove("is-visible");
+        this.enableButtons()
+        
     }
 
     addSong = () => {
@@ -373,11 +377,13 @@ class App extends React.Component {
             this.setStateWithUpdatedList(this.state.currentList)
             let modal = document.getElementById("delete-song-modal");
             modal.classList.remove("is-visible"); 
+            this.enableButtons()
     }
 
     hideDeleteSongModal = () =>{
         let modal = document.getElementById("delete-song-modal");
         modal.classList.remove("is-visible");
+        this.enableButtons();
     }
 
     keydownHandler=(e)=>{
@@ -397,6 +403,44 @@ class App extends React.Component {
     }
     componentWillUnmount(){
         document.removeEventListener('keydown',this.keydownHandler);
+    }
+
+    disableTheButtons = () =>{
+        let addSongButt=document.getElementById("add-song-button")
+        console.log(addSongButt)
+        addSongButt.className="toolbar-button-disabled"
+        let undoButt=document.getElementById("undo-button")
+        undoButt.className="toolbar-button-disabled"
+        let redoButt=document.getElementById("redo-button")
+        redoButt.className="toolbar-button-disabled"
+        let closeSongButt=document.getElementById("close-button")
+        closeSongButt.className="toolbar-button-disabled"
+        let addlistButt=document.getElementById("add-list-button")
+        addlistButt.className="toolbar-button-disabled"
+
+    }
+
+    enableButtons = () =>{
+        if(this.state.currentList !== null){
+            let addSongButt=document.getElementById("add-song-button")
+            addSongButt.className="toolbar-button"
+        }
+        if(this.tps.hasTransactionToUndo()){
+            let undoButt=document.getElementById("undo-button")
+            undoButt.className="toolbar-button"
+        }
+        if(this.tps.hasTransactionToRedo()){
+            let redoButt=document.getElementById("redo-button")
+            redoButt.className="toolbar-button"
+        }
+        if(this.state.currentList !== null){
+            let closeSongButt=document.getElementById("close-button")
+            closeSongButt.className="toolbar-button"
+        }
+        if(this.state.currentList === null){
+            let addlistButt=document.getElementById("add-list-button")
+            addlistButt.className="toolbar-button"
+        }
     }
 
 
@@ -422,6 +466,7 @@ class App extends React.Component {
                     deleteListCallback={this.markListForDeletion}
                     loadListCallback={this.loadList}
                     renameListCallback={this.renameList}
+                    disableButtons={this.disableTheButtons}
                 />
                 <EditToolbar
                     canAddSong={canAddSong}
@@ -438,6 +483,7 @@ class App extends React.Component {
                     moveSongCallback={this.addMoveSongTransaction} 
                     editSongCallback={this.markEditSong}
                     deleteSongCallback={this.markDeleteSong}
+                    disableButtons={this.disableTheButtons}
                     />
                 <Statusbar 
                     currentList={this.state.currentList} />

@@ -55,6 +55,7 @@ export default class SongCard extends React.Component {
     }
 
     handleClick= (event) => {
+        this.props.disableButtons();
         this.props.editSongCallback(this.getItemNum())
     }
     getItemNum = () => {
@@ -62,6 +63,8 @@ export default class SongCard extends React.Component {
     }
 
     handleDeleteSong= (event) =>{
+        console.log("DELETING SONG!!!!!!!!")
+        this.props.disableButtons();
         event.stopPropagation();
         this.props.deleteSongCallback(this.getItemNum());
     }
